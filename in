@@ -1,0 +1,14 @@
+total 272
+drwxr-xr-x  13 aaghla  candidate    442 Feb 16 19:00 .
+drwxr-xr-x   4 aaghla  candidate    136 Feb 16 10:21 ..
+drwxr-xr-x  12 aaghla  candidate    408 Feb 16 10:21 .git
+drwxr-xr-x  82 aaghla  candidate   2788 Feb 16 18:11 Libft
+-rw-r--r--   1 aaghla  candidate    619 Feb 16 18:11 Makefile
+drwxr-xr-x   6 aaghla  candidate    204 Feb 16 18:48 Mandatory
+-rw-r--r--   1 aaghla  candidate      7 Feb 16 10:21 README.md
+-rwxr-xr-x   1 aaghla  candidate  49504 Feb 16 19:00 a.out
+-rwxr-xr-x   1 aaghla  candidate     52 Feb 16 18:48 in
+-rwxr-xr-x   1 aaghla  candidate  10694 Feb 16 16:20 ls_output.txt
+-rwxr-xr-x   1 aaghla  candidate      9 Feb 16 18:48 out
+-rwxr-xr-x   1 aaghla  candidate  50360 Feb 16 18:48 pipex
+-rwxr-xr-x   1 aaghla  candidate    199 Feb 16 19:00 test.c
