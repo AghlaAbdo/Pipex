@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/16 18:48:34 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/20 10:59:27 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,68 +43,153 @@ void	leaks(void)
 	system("leaks pipex");
 }
 
+char	*find_cmd_path(char **arr, char **cmd)
+{
+	char	*cmd_p;
+	int		i;
+
+	if (cmd[0][0] == '/')
+	{
+		if (!access(cmd[0], F_OK | X_OK))
+			return (cmd[0]);
+		else
+			return (NULL);
+	}
+	i = 0;
+	while (arr[i])
+	{
+		cmd_p = ft_strjoin(ft_strdup(arr[i]), "/");
+		cmd_p = ft_strjoin(cmd_p, cmd[0]);
+		if (!access(cmd_p, F_OK | X_OK))
+			return (cmd_p);
+		free(cmd_p);
+		i++;
+	}
+	perror(cmd[0]);
+	// free_arr(arr);
+	// free_arr(cmd);
+	// exit(1);
+	return (NULL);
+}
+
+int	handle_fds_one(char **av, int *fds)
+{
+	int	fd;
+
+	close(fds[0]);
+	fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+	{
+		close(fds[1]);
+		perror(av[1]);
+		return (1);
+	}
+	dup2(fd, 0);
+	dup2(fds[1], 1);
+	close(fds[1]);
+	close(fd);
+	return (0);
+}
+
+int	exec_cmd_one(char **av, char **env, char **paths, int *fds)
+{
+	char	*path_v;
+	char	**cmd;
+	int		id;
+	int		open;
+
+	cmd = ft_split(av[2], ' ');
+	if (!cmd || !*cmd)
+		return (1);
+	id = fork();
+	if (id == -1)
+		return (free_arr(cmd), perror("Error"), 1);
+	if (id == 0)
+	{
+		open = handle_fds_one(av, fds);
+		path_v = find_cmd_path(paths, cmd);
+		// fprintf(stderr, "%s\n", path_v);
+		if (!path_v || open)
+			return (free_arr(cmd), free(path_v), 1);
+		execve(path_v, cmd, env);
+		perror("exec");
+		return (free_arr(cmd), free(path_v), 1);
+	}
+	// printf("herein\n");
+	// wait(NULL);
+	// waitpid(id, NULL, 0);
+	return (free_arr(cmd), 0);
+}
+
+int	handle_fds_two(char **av, int *fds)
+{
+	int	fd;
+
+	close(fds[1]);
+	fd = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	if (fd == -1)
+	{
+		close(fds[0]);
+		perror(av[4]);
+		return (1);
+	}
+	dup2(fds[0], 0);
+	dup2(fd, 1);
+	close(fd);
+	close(fds[0]);
+	return (0);
+}
+
+int	exec_cmd_two(char **av, char **env, char **paths, int *fds)
+{
+	char	*path_v;
+	char	**cmd;
+	int		id;
+	int		open;
+
+	(void)env;
+	cmd = ft_split(av[3], ' ');
+	if (!cmd || !*cmd)
+		return (1);
+	id = fork();
+	if (id == -1)
+		return (free_arr(cmd), 1);
+	// printf("id = %d\n", id);
+	if (id == 0)
+	{
+		open = handle_fds_two(av, fds);
+		path_v = find_cmd_path(paths, cmd);
+		if (!path_v || open)
+			return (free_arr(cmd), free(path_v), 1);
+		// fprintf(stderr, "%s\n", path_v);
+		execve(path_v, cmd, env);
+		perror("exec");
+		return (free_arr(cmd), free(path_v), 1);
+	}
+	// waitpid(id, NULL, 0);
+	return (free_arr(cmd), 0);
+}
+
 int	main(int ac, char **av, char **env)
 {
-	int	id;
 	char	*path_v;
-	char	**path;
-	int		i;
+	char	**paths;
 	int		fds[2];
-	int		fd;
+	int		status;
+	// int		rtrn;
 
-	i = 0;
-	(void)ac;
-	if (pipe(fds) == -1)
+	// atexit(leaks);
+	if (ac != 5 || pipe(fds) == -1)
 		return (1);
 	path_v = find_path(env);
-	path = ft_split(path_v, ':');
-	id = fork();
-	// atexit(leaks);
-	if (id == 0)
-	{
-		sleep(1);
-		close(fds[0]);
-		fd = open(av[1], O_CREAT | O_RDWR, 0777);
-		// printf("fd = %d\n", fd);
-		dup2(fd, 0);
-		dup2(fds[1], 1);
-		close(fds[1]);
-		close(fd);
-		// printf("fd = %d\n", fd);
-		while (path[i])
-		{
-			path_v = ft_strjoin(path[i], "/cat");
-			if (!access(path_v, F_OK | X_OK))
-			{
-				// printf("path = %s\n", path_v);
-				execve(path_v, (char *[]){path_v, NULL}, env);
-			}
-			free(path_v);
-			i++;
-		}
-	}
-	id = fork();
-	i = 0;
-	if (id == 0)
-	{
-		fd = open(av[2], O_CREAT | O_RDWR, 0777);
-		close(fds[1]);
-		dup2(fds[0], 0);
-		dup2(fd, 1);
-		close(fd);
-		close(fds[0]);
-		while (path[i])
-		{
-			path_v = ft_strjoin(path[i], "/wc");
-			if (!access(path_v, F_OK | X_OK))
-			{
-				// printf("path = %s\n", path_v);
-				execve(path_v, (char *[]){path_v, "-l", NULL}, env);
-			}
-			free(path_v);
-			i++;
-		}
-	}
-	free_arr(path);
-	return (0);
+	paths = ft_split(path_v, ':');
+	if (exec_cmd_one(av, env, paths, fds))
+		return (2);
+	wait(NULL);
+	close(fds[1]);
+	if (exec_cmd_two(av, env, paths, fds))
+		return (3);
+	wait(&status);
+	free_arr(paths);
+	return (WEXITSTATUS(status));
 }

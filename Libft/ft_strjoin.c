@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 15:28:46 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/16 15:14:20 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/17 08:01:24 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ char	*ft_strjoin(char *s1, char const *s2)
 	while (s2[i])
 		str[j++] = s2[i++];
 	str[j] = '\0';
-	// free(s1);
+	free(s1);
 	return (str);
 }
