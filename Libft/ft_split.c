@@ -6,48 +6,73 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:46:45 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/04 22:20:41 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/21 21:47:43 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+// #include <stdio.h>
 
 static int	wordcount(char const *s, char c)
 {
-	int	i;
-	int	count;
+	int		i;
+	int		count;
+	char	first_c;
 
 	i = 0;
 	count = 0;
 	while (s[i])
 	{
-		while (s[i] && s[i] == c)
+		while (s[i] && (s[i] == c || s[i] == 9))
 			i++;
+		if (s[i] == '\'' || s[i] == '"')
+		{
+			first_c = s[i++];
+			while (s[i] && s[i] != first_c)
+				i++;
+		}
 		if (s[i])
 			count++;
-		while (s[i] && s[i] != c)
+		while (s[i] && (s[i] != c || s[i] != 9))
 			i++;
 	}
 	return (count);
+}
+
+int	word_len(char const *str, char *c)
+{
+	int	i;
+	
+	i = 0;
+	if (str[i] == '\'' || str[i] == '"')
+	{
+		*c = str[i];
+		i++;
+		while (str[i] && str[i] != *c)
+			i++;
+	}
+	else
+		while (str[i] && (str[i] != *c || str[i] != 9))
+			i++;
+	return (i);
 }
 
 static char	*word(char const *str, char c)
 {
 	char	*word;
 	int		i;
+	int		j;
 
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
+	i = word_len(str, &c);
 	word = malloc((i +1) * sizeof(char));
 	if (!word)
 		return (NULL);
 	i = 0;
-	while (str[i] && str[i] != c)
-	{
-		word[i] = str[i];
+	j = 0;
+	if (c == '\'' || c == '"')
 		i++;
-	}
+	while (str[i] && str[i] != c)
+		word[j++] = str[i++];
 	word[i] = '\0';
 	return (word);
 }
@@ -63,6 +88,21 @@ static char	**freearr(char **arr, int i)
 	return (NULL);
 }
 
+void	skip_word(char const **s, char c)
+{
+	if (**s == '\'' || **s == '"')
+	{
+		c = **s;
+		(*s)++;
+		while (**s && **s != c)
+			(*s)++;
+		(*s)++;
+	}
+	else
+		while (**s && **s != c)
+			(*s)++;
+}
+
 char	**ft_split(char const *s, char c)
 {
 	char	**arr;
@@ -76,7 +116,7 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	while (*s)
 	{
-		while (*s && *s == c)
+		while (*s && (*s == c || *s == 9))
 			s++;
 		if (*s)
 		{
@@ -85,8 +125,7 @@ char	**ft_split(char const *s, char c)
 				return (freearr(arr, i));
 			i++;
 		}
-		while (*s && *s != c)
-			s++;
+		skip_word(&s, c);
 	}
 	arr[i] = NULL;
 	return (arr);

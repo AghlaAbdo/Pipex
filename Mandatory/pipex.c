@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/20 10:59:27 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/21 21:46:57 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ char	*find_cmd_path(char **arr, char **cmd)
 		i++;
 	}
 	perror(cmd[0]);
-	// free_arr(arr);
-	// free_arr(cmd);
-	// exit(1);
 	return (NULL);
 }
 
@@ -108,16 +105,12 @@ int	exec_cmd_one(char **av, char **env, char **paths, int *fds)
 	{
 		open = handle_fds_one(av, fds);
 		path_v = find_cmd_path(paths, cmd);
-		// fprintf(stderr, "%s\n", path_v);
 		if (!path_v || open)
 			return (free_arr(cmd), free(path_v), 1);
 		execve(path_v, cmd, env);
 		perror("exec");
 		return (free_arr(cmd), free(path_v), 1);
 	}
-	// printf("herein\n");
-	// wait(NULL);
-	// waitpid(id, NULL, 0);
 	return (free_arr(cmd), 0);
 }
 
@@ -126,7 +119,7 @@ int	handle_fds_two(char **av, int *fds)
 	int	fd;
 
 	close(fds[1]);
-	fd = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	fd = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		close(fds[0]);
@@ -147,26 +140,22 @@ int	exec_cmd_two(char **av, char **env, char **paths, int *fds)
 	int		id;
 	int		open;
 
-	(void)env;
 	cmd = ft_split(av[3], ' ');
 	if (!cmd || !*cmd)
 		return (1);
 	id = fork();
 	if (id == -1)
 		return (free_arr(cmd), 1);
-	// printf("id = %d\n", id);
 	if (id == 0)
 	{
 		open = handle_fds_two(av, fds);
 		path_v = find_cmd_path(paths, cmd);
 		if (!path_v || open)
 			return (free_arr(cmd), free(path_v), 1);
-		// fprintf(stderr, "%s\n", path_v);
 		execve(path_v, cmd, env);
 		perror("exec");
 		return (free_arr(cmd), free(path_v), 1);
 	}
-	// waitpid(id, NULL, 0);
 	return (free_arr(cmd), 0);
 }
 
@@ -176,7 +165,6 @@ int	main(int ac, char **av, char **env)
 	char	**paths;
 	int		fds[2];
 	int		status;
-	// int		rtrn;
 
 	// atexit(leaks);
 	if (ac != 5 || pipe(fds) == -1)
@@ -190,6 +178,7 @@ int	main(int ac, char **av, char **env)
 	if (exec_cmd_two(av, env, paths, fds))
 		return (3);
 	wait(&status);
+	
 	free_arr(paths);
 	return (WEXITSTATUS(status));
 }
