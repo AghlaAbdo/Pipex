@@ -6,70 +6,18 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/21 21:46:57 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/23 09:25:01 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*find_path(char **env)
-{
-	int	i;
-	
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(env[i], "PATH=", 5))
-			return (ft_strchr(env[i], '=') + 1);
-		i++;
-	}
-	return (NULL);
-}
+// void	leaks(void)
+// {
+// 	system("leaks pipex");
+// }
 
-void	free_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i++]);
-	}
-	free(arr);
-}
-
-void	leaks(void)
-{
-	system("leaks pipex");
-}
-
-char	*find_cmd_path(char **arr, char **cmd)
-{
-	char	*cmd_p;
-	int		i;
-
-	if (cmd[0][0] == '/')
-	{
-		if (!access(cmd[0], F_OK | X_OK))
-			return (cmd[0]);
-		else
-			return (NULL);
-	}
-	i = 0;
-	while (arr[i])
-	{
-		cmd_p = ft_strjoin(ft_strdup(arr[i]), "/");
-		cmd_p = ft_strjoin(cmd_p, cmd[0]);
-		if (!access(cmd_p, F_OK | X_OK))
-			return (cmd_p);
-		free(cmd_p);
-		i++;
-	}
-	perror(cmd[0]);
-	return (NULL);
-}
-
-int	handle_fds_one(char **av, int *fds)
+int	handle_fds_one(char **av, int *fds, char **cmd)
 {
 	int	fd;
 
@@ -79,6 +27,7 @@ int	handle_fds_one(char **av, int *fds)
 	{
 		close(fds[1]);
 		perror(av[1]);
+		free_arr(cmd);
 		return (1);
 	}
 	dup2(fd, 0);
@@ -103,7 +52,7 @@ int	exec_cmd_one(char **av, char **env, char **paths, int *fds)
 		return (free_arr(cmd), perror("Error"), 1);
 	if (id == 0)
 	{
-		open = handle_fds_one(av, fds);
+		open = handle_fds_one(av, fds, cmd);
 		path_v = find_cmd_path(paths, cmd);
 		if (!path_v || open)
 			return (free_arr(cmd), free(path_v), 1);
@@ -114,7 +63,7 @@ int	exec_cmd_one(char **av, char **env, char **paths, int *fds)
 	return (free_arr(cmd), 0);
 }
 
-int	handle_fds_two(char **av, int *fds)
+int	handle_fds_two(char **av, int *fds, char **cmd)
 {
 	int	fd;
 
@@ -124,6 +73,7 @@ int	handle_fds_two(char **av, int *fds)
 	{
 		close(fds[0]);
 		perror(av[4]);
+		free_arr(cmd);
 		return (1);
 	}
 	dup2(fds[0], 0);
@@ -148,7 +98,7 @@ int	exec_cmd_two(char **av, char **env, char **paths, int *fds)
 		return (free_arr(cmd), 1);
 	if (id == 0)
 	{
-		open = handle_fds_two(av, fds);
+		open = handle_fds_two(av, fds, cmd);
 		path_v = find_cmd_path(paths, cmd);
 		if (!path_v || open)
 			return (free_arr(cmd), free(path_v), 1);
@@ -159,6 +109,7 @@ int	exec_cmd_two(char **av, char **env, char **paths, int *fds)
 	return (free_arr(cmd), 0);
 }
 
+	// atexit(leaks);
 int	main(int ac, char **av, char **env)
 {
 	char	*path_v;
@@ -166,7 +117,6 @@ int	main(int ac, char **av, char **env)
 	int		fds[2];
 	int		status;
 
-	// atexit(leaks);
 	if (ac != 5 || pipe(fds) == -1)
 		return (1);
 	path_v = find_path(env);
@@ -178,7 +128,6 @@ int	main(int ac, char **av, char **env)
 	if (exec_cmd_two(av, env, paths, fds))
 		return (3);
 	wait(&status);
-	
 	free_arr(paths);
 	return (WEXITSTATUS(status));
 }

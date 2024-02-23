@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 10:24:11 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/22 16:44:48 by aaghla           ###   ########.fr       */
+/*   Created: 2024/02/22 18:04:16 by aaghla            #+#    #+#             */
+/*   Updated: 2024/02/23 11:57:23 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
+# include "../Libft/libft.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
-# include "../Libft/libft.h"
 
-char	*find_path(char **env);
-void	free_arr(char **arr);
-char	*find_cmd_path(char **arr, char **cmd);
+typedef struct	s_data
+{
+	char	**paths;
+	char	*path_v;
+	char	*cmd_path;
+	int		cmd_n;
+	int		**fds;
+}				t_data;
 
 #endif

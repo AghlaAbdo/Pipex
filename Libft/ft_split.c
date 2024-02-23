@@ -6,12 +6,11 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:46:45 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/21 21:47:43 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/22 16:36:37 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-// #include <stdio.h>
 
 static int	wordcount(char const *s, char c)
 {
@@ -33,28 +32,10 @@ static int	wordcount(char const *s, char c)
 		}
 		if (s[i])
 			count++;
-		while (s[i] && (s[i] != c || s[i] != 9))
+		while (s[i] && (s[i] != c && s[i] != 9))
 			i++;
 	}
 	return (count);
-}
-
-int	word_len(char const *str, char *c)
-{
-	int	i;
-	
-	i = 0;
-	if (str[i] == '\'' || str[i] == '"')
-	{
-		*c = str[i];
-		i++;
-		while (str[i] && str[i] != *c)
-			i++;
-	}
-	else
-		while (str[i] && (str[i] != *c || str[i] != 9))
-			i++;
-	return (i);
 }
 
 static char	*word(char const *str, char c)
@@ -70,9 +51,14 @@ static char	*word(char const *str, char c)
 	i = 0;
 	j = 0;
 	if (c == '\'' || c == '"')
+	{
 		i++;
-	while (str[i] && str[i] != c)
-		word[j++] = str[i++];
+		while (str[i] && str[i] != c)
+			word[j++] = str[i++];
+	}
+	else
+		while (str[i] && str[i] != c && str[i] != 9)
+			word[j++] = str[i++];
 	word[i] = '\0';
 	return (word);
 }
@@ -86,21 +72,6 @@ static char	**freearr(char **arr, int i)
 	}
 	free(arr);
 	return (NULL);
-}
-
-void	skip_word(char const **s, char c)
-{
-	if (**s == '\'' || **s == '"')
-	{
-		c = **s;
-		(*s)++;
-		while (**s && **s != c)
-			(*s)++;
-		(*s)++;
-	}
-	else
-		while (**s && **s != c)
-			(*s)++;
 }
 
 char	**ft_split(char const *s, char c)
