@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/23 09:25:01 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/24 11:38:01 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,13 +120,15 @@ int	main(int ac, char **av, char **env)
 	if (ac != 5 || pipe(fds) == -1)
 		return (1);
 	path_v = find_path(env);
+	if (!path_v)
+		return (2);
 	paths = ft_split(path_v, ':');
 	if (exec_cmd_one(av, env, paths, fds))
-		return (2);
+		return (3);
 	wait(NULL);
 	close(fds[1]);
 	if (exec_cmd_two(av, env, paths, fds))
-		return (3);
+		return (4);
 	wait(&status);
 	free_arr(paths);
 	return (WEXITSTATUS(status));
