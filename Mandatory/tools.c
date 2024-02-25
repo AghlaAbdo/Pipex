@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:40:51 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/24 11:37:27 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/25 22:12:59 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,15 @@ char	*find_cmd_path(char **arr, char **cmd)
 	char	*cmd_p;
 	int		i;
 
-	if (cmd[0][0] == '/')
+	if (ft_strchr(cmd[0], '/') != NULL)
 	{
 		if (!access(cmd[0], F_OK | X_OK))
 			return (cmd[0]);
 		else
+		{
+			perror(cmd[0]);
 			return (NULL);
+		}
 	}
 	i = 0;
 	while (arr[i])
@@ -64,4 +67,15 @@ char	*find_cmd_path(char **arr, char **cmd)
 	}
 	perror(cmd[0]);
 	return (NULL);
+}
+
+void	clear_exit(char **paths, char **cmd, char *path_v, int status)
+{
+	if (paths)
+		free_arr(paths);
+	if (cmd)
+		free_arr(cmd);
+	if (path_v)
+		free(path_v);
+	exit(status);
 }

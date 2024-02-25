@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 10:24:11 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/25 22:13:10 by aaghla           ###   ########.fr       */
+/*   Created: 2023/12/15 18:00:32 by aaghla            #+#    #+#             */
+/*   Updated: 2024/02/10 09:41:42 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include <unistd.h>
-# include <stdio.h>
+# include <stdlib.h>
 # include <fcntl.h>
-# include <errno.h>
-# include "../Libft/libft.h"
 
-char	*find_path(char **env);
-void	free_arr(char **arr);
-char	*find_cmd_path(char **arr, char **cmd);
-void	clear_exit(char **paths, char **cmd, char *path_v, int status);
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
+
+char	*get_next_line(int fd);
+char	*my_strchr(const char *s, int c);
+char	*my_strjoin(char *s1, char *s2, int rd);
+int		my_strlen(char *s, int c);
+void	*my_free_it(char *s);
 
 #endif

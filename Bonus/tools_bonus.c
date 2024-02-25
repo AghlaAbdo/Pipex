@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:23:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/24 12:50:37 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/25 22:53:19 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	handle_fds_last(char **av, t_data *data, int j)
 	}
 	return (0);
 }
+
 
 int	cmd_count(t_data *data, int ac, char **av)
 {

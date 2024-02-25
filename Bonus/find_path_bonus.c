@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:32:20 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/24 12:46:13 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/25 18:56:38 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*find_cmd_path(char **arr, char *cmd)
 	char	*cmd_p;
 	int		i;
 
-	if (cmd[0] == '/')
+	if (ft_strchr(cmd, '/'))
 	{
 		if (!access(cmd, F_OK | X_OK))
 			return (ft_strdup(cmd));
@@ -57,13 +57,14 @@ char	*find_cmd_path(char **arr, char *cmd)
 	return (NULL);
 }
 
-void	clear_exit(t_data *data, char **cmd, char *path)
+void	clear_exit(t_data *data, char **cmd, char *path, int status)
 {
+	fprintf(stderr, "exit code is %d\n", status);
 	free_arr(data->paths);
 	close_fds(data->fds, data->fds_n);
 	if (cmd)
 		free_arr(cmd);
 	if (path)
 		free(path);
-	exit(5);
+	exit(status);
 }

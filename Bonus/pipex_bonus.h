@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:04:16 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/24 12:50:00 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/25 22:31:33 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PIPEX_BONUS_H
 
 # include "../Libft/libft.h"
+# include "../get_next_line/get_next_line.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -26,6 +27,8 @@ typedef struct s_data
 	int		cmd_n;
 	int		cmd_i;
 	int		**fds;
+	int		here_fd[2];
+	int		input_fd;
 	int		fds_n;
 }				t_data;
 
@@ -39,6 +42,6 @@ int		cmd_count(t_data *data, int ac, char **av);
 void	free_arr(char **arr);
 char	*find_path(char **env);
 char	*find_cmd_path(char **arr, char *cmd);
-void	clear_exit(t_data *data, char **cmd, char *path);
+void	clear_exit(t_data *data, char **cmd, char *path, int status);
 
 #endif
