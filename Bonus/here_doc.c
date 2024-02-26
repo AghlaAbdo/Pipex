@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 09:45:07 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 09:46:17 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 16:04:49 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int	check_end(char *limitter, char *line)
 	if (!line)
 		return (1);
 	size = ft_strlen(limitter);
-	if (!ft_strncmp(limitter, line, size) && (line[size] == '\n' || line[size] == '\0'))
+	if (!ft_strncmp(limitter, line, size) && (line[size] == '\n'
+			|| line[size] == '\0'))
 		return (0);
 	return (1);
 }

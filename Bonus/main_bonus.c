@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:03:56 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 14:57:00 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 18:07:49 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	exec_cmd(t_data *data, char **av, char **env, int j)
 int	fork_it(t_data *data, char **av, char **env, int cmd_n)
 {
 	int	j;
-	int status;
+	int	status;
 
 	init_pipes(data);
 	first_cmd(data, av, env);
@@ -125,18 +125,12 @@ int	fork_it(t_data *data, char **av, char **env, int cmd_n)
 	return (status);
 }
 
-void	leaks(void)
-{
-	system("leaks pipex_bonus");
-}
-
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
 	char	*path_v;
 	int		rtrn;
 
-	// atexit(leaks);
 	path_v = find_path(env);
 	if (!path_v)
 		return (1);
@@ -144,16 +138,15 @@ int	main(int ac, char **av, char **env)
 	data.cmd_n = cmd_count(&data, ac, av);
 	data.paths = ft_split(path_v, ':');
 	if (!data.paths)
-		return (2);
+		return (1);
 	data.fds_n = data.cmd_n -1;
 	data.fds = init_fds(data.fds_n);
 	if (!data.fds)
 	{
 		free_arr(data.paths);
-		return (3);
+		return (1);
 	}
 	rtrn = fork_it(&data, av, env, data.cmd_n);
 	free_arr(data.paths);
-	// sleep(10);
 	return (rtrn);
 }

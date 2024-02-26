@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:40:51 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/25 22:12:59 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 16:49:18 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,28 @@ char	*find_cmd_path(char **arr, char **cmd)
 	return (NULL);
 }
 
-void	clear_exit(char **paths, char **cmd, char *path_v, int status)
+void	clear_exit(char ***paths, char **cmd, char *path_v, int status)
 {
-	if (paths)
-		free_arr(paths);
-	if (cmd)
-		free_arr(cmd);
-	if (path_v)
-		free(path_v);
+	if (*paths)
+	{
+		free_arr(*paths);
+		*paths = NULL;
+	}
+	if (cmd && !*cmd)
+	{
+		ft_putstr_fd(": No such file or directory\n", 2);
+		free(cmd);
+		if (path_v && !*path_v)
+			status = 126;
+		else
+			status = 127;
+	}
+	else
+	{
+		if (cmd)
+			free_arr(cmd);
+		if (path_v)
+			free(path_v);
+	}
 	exit(status);
 }
