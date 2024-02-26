@@ -9,11 +9,12 @@ HEADER_BONS	= ./Bonus/pipex_bonus.h
 SRCS		= ./Mandatory/pipex.c	\
 			./Mandatory/tools.c
 
-SRCS_BONS	= ./Bonus/main_bonus.c			\
-			./Bonus/find_path_bonus.c		\
-			./Bonus/handle_pipes_bonus.c	\
-			./Bonus/tools_bonus.c			\
-			./get_next_line/get_next_line.c	\
+SRCS_BONS	= ./Bonus/main_bonus.c					\
+			./Bonus/find_path_bonus.c				\
+			./Bonus/handle_pipes_bonus.c			\
+			./Bonus/tools_bonus.c					\
+			./Bonus/here_doc.c						\
+			./get_next_line/get_next_line.c			\
 			./get_next_line/get_next_line_utils.c
 				
 OBJS = $(SRCS:.c=.o)

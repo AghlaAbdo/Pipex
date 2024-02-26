@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 15:28:46 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/17 08:01:24 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 09:37:20 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_strjoin(char *s1, char const *s2)
 		j++;
 	str = (char *)malloc((i + j +1) * sizeof(char));
 	if (!str)
-		return (NULL);
+		return (free(s1), NULL);
 	i = 0;
 	j = 0;
 	while (s1[i])

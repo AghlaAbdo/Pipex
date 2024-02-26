@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:26:27 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/24 12:46:54 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 11:29:08 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	init_pipes(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	while (i < data->fds_n)
+	i = -1;
+	while (++i < data->fds_n)
 	{
 		if (pipe(data->fds[i]) < 0)
 		{
@@ -55,9 +55,14 @@ void	init_pipes(t_data *data)
 			while (i < data->fds_n)
 				free(data->fds[i++]);
 			free(data->fds);
-			exit(4);
+			free_arr(data->paths);
+			if (data->here_doc)
+			{
+				close(data->here_fd[0]);
+				close(data->here_fd[1]);
+			}
+			exit(1);
 		}
-		i++;
 	}
 }
 

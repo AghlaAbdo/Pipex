@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:04:16 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/25 22:31:33 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 09:46:29 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_data
 	int		cmd_i;
 	int		**fds;
 	int		here_fd[2];
-	int		input_fd;
+	int		here_doc;
 	int		fds_n;
 }				t_data;
 
@@ -43,5 +43,6 @@ void	free_arr(char **arr);
 char	*find_path(char **env);
 char	*find_cmd_path(char **arr, char *cmd);
 void	clear_exit(t_data *data, char **cmd, char *path, int status);
+void	read_heredoc(t_data *data, char **av);
 
 #endif

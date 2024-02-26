@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:32:20 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/25 18:56:38 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 15:01:46 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,33 +38,48 @@ char	*find_cmd_path(char **arr, char *cmd)
 		if (!access(cmd, F_OK | X_OK))
 			return (ft_strdup(cmd));
 		else
-		{
-			perror(cmd);
-			return (NULL);
-		}
+			return (perror(cmd), NULL);
 	}
 	i = 0;
 	while (arr[i])
 	{
 		cmd_p = ft_strjoin(ft_strdup(arr[i]), "/");
+		if (!cmd_p)
+			return (NULL);
 		cmd_p = ft_strjoin(cmd_p, cmd);
+		if (!cmd_p)
+			return (NULL);
 		if (!access(cmd_p, F_OK | X_OK))
 			return (cmd_p);
 		free(cmd_p);
 		i++;
 	}
-	perror(cmd);
-	return (NULL);
+	return (perror(cmd), NULL);
 }
 
 void	clear_exit(t_data *data, char **cmd, char *path, int status)
 {
-	fprintf(stderr, "exit code is %d\n", status);
-	free_arr(data->paths);
 	close_fds(data->fds, data->fds_n);
-	if (cmd)
-		free_arr(cmd);
-	if (path)
-		free(path);
+	if (data->paths)
+	{
+		free_arr(data->paths);
+		data->paths = NULL;
+	}
+	if (cmd && !*cmd)
+	{
+		ft_putstr_fd(": No such file or directory\n", 2);
+		free(cmd);
+		if (path && !*path)
+			status = 126;
+		else
+			status = 127;
+	}
+	else
+	{
+		if (cmd)
+			free_arr(cmd);
+		if (path)
+			free(path);
+	}
 	exit(status);
 }

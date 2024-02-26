@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 12:32:45 by aaghla            #+#    #+#             */
-/*   Updated: 2024/01/20 21:27:48 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/26 08:20:07 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i] && s[i] != '\n')
+	while (s[i])
 		i++;
 	return (i);
 }
