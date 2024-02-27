@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:23:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 14:53:24 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 17:36:48 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	handle_fds_first(char **av, t_data *data)
 		close(data->here_fd[0]);
 		close(data->here_fd[1]);
 	}
-	close_fds(data->fds, data->fds_n);
 	return (0);
 }
 

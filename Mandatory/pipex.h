@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:24:11 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 16:49:29 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 19:11:40 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 char	*find_path(char **env);
 void	free_arr(char **arr);
-char	*find_cmd_path(char **arr, char **cmd);
+char	*find_cmd_path(char **arr, char *cmd);
 void	clear_exit(char ***paths, char **cmd, char *path_v, int status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 17:02:57 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 19:12:42 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ void	exec_cmd_one(char **av, char **env, char **paths, int *fds)
 		clear_exit(&paths, NULL, NULL, 1);
 	if (id == 0)
 	{
-	cmd = ft_split(av[2], ' ');
-	if (!cmd || !*cmd)
-		clear_exit(&paths, cmd, av[2], 1);
+		cmd = ft_split(av[2], ' ');
+		if (!cmd || !*cmd)
+			clear_exit(&paths, cmd, av[2], 1);
 		if (handle_fds_one(av, fds))
 			clear_exit(&paths, cmd, NULL, 1);
-		path_v = find_cmd_path(paths, cmd);
+		path_v = find_cmd_path(paths, cmd[0]);
 		if (!path_v)
 			clear_exit(&paths, cmd, path_v, 127);
 		free_arr(paths);
@@ -107,7 +107,7 @@ void	exec_cmd_two(char **av, char **env, char **paths, int *fds)
 			clear_exit(&paths, cmd, av[3], 1);
 		if (handle_fds_two(av, fds))
 			clear_exit(&paths, cmd, NULL, 1);
-		path_v = find_cmd_path(paths, cmd);
+		path_v = find_cmd_path(paths, cmd[0]);
 		if (!path_v)
 			clear_exit(&paths, cmd, path_v, 127);
 		free_arr(paths);

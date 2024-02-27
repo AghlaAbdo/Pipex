@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:04:16 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 09:46:29 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 16:57:23 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_data
 
 int		**init_fds(int fds_n);
 void	init_pipes(t_data *data);
-void	close_fds(int **fds, int n);
+void	close_fds(t_data *data);
 int		handle_fds(t_data *data, int j);
 int		handle_fds_first(char **av, t_data *data);
 int		handle_fds_last(char **av, t_data *data, int j);

@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:26:27 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 11:29:08 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 17:36:30 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,22 @@ void	init_pipes(t_data *data)
 	}
 }
 
-void	close_fds(int **fds, int n)
+void	close_fds(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (i < n)
+	if (!data->fds)
+		return ;
+	while (i < data->fds_n)
 	{
-		close(fds[i][0]);
-		close(fds[i][1]);
+		close(data->fds[i][0]);
+		close(data->fds[i][1]);
 		i++;
 	}
 	i = 0;
-	while (i < n)
-	{
-		free(fds[i++]);
-	}
-	free(fds);
+	while (i < data->fds_n)
+		free(data->fds[i++]);
+	free(data->fds);
+	data->fds = NULL;
 }

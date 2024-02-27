@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:32:20 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 15:01:46 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 17:00:35 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*find_cmd_path(char **arr, char *cmd)
 
 void	clear_exit(t_data *data, char **cmd, char *path, int status)
 {
-	close_fds(data->fds, data->fds_n);
+	close_fds(data);
 	if (data->paths)
 	{
 		free_arr(data->paths);

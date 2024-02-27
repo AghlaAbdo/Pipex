@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:03:56 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 18:07:49 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 17:34:40 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	first_cmd(t_data *data, char **av, char **env)
 			clear_exit(data, cmd, cmd_path, 1);
 		if (!cmd_path)
 			clear_exit(data, cmd, cmd_path, 127);
+		close_fds(data);
 		free_arr(data->paths);
 		execve(cmd_path, cmd, env);
 		perror("exec");
@@ -58,13 +59,13 @@ int	last_cmd(t_data *data, char **av, char **env, int j)
 			clear_exit(data, cmd, cmd_path, 1);
 		if (!cmd_path)
 			clear_exit(data, cmd, cmd_path, 127);
-		close_fds(data->fds, data->fds_n);
+		close_fds(data);
 		free_arr(data->paths);
 		execve(cmd_path, cmd, env);
 		perror("exec");
 		clear_exit(data, cmd, cmd_path, 1);
 	}
-	close_fds(data->fds, data->fds_n);
+	close_fds(data);
 	waitpid(id, &status, 0);
 	return (WEXITSTATUS(status));
 }
@@ -88,7 +89,7 @@ void	exec_cmd(t_data *data, char **av, char **env, int j)
 			clear_exit(data, cmd, cmd_path, 1);
 		if (!cmd_path)
 			clear_exit(data, cmd, cmd_path, 127);
-		close_fds(data->fds, data->fds_n);
+		close_fds(data);
 		free_arr(data->paths);
 		execve(cmd_path, cmd, env);
 		perror("exec");
