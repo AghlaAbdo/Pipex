@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:23:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 17:36:48 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/28 10:42:46 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ int	handle_fds_last(char **av, t_data *data, int j)
 {
 	int	fd;
 
-	fd = open(av[data->ac -1], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (!data->here_doc)
+		fd = open(av[data->ac -1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	else
+		fd = open(av[data->ac -1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
 	{
 		perror(av[data->ac -1]);
@@ -74,6 +77,8 @@ int	cmd_count(t_data *data, int ac, char **av)
 
 	if (!ft_strncmp(av[1], "here_doc", 9))
 	{
+		if (ac < 6)
+			return (-1);
 		data->cmd_i = 3;
 		count = ac - 4;
 		data->here_doc = 1;

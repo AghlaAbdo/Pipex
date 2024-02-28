@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:32:20 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 17:00:35 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/28 08:17:26 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*find_path(char **env)
 	return (NULL);
 }
 
-char	*find_cmd_path(char **arr, char *cmd)
+char	*find_cmd_path(char **paths, char *cmd)
 {
 	char	*cmd_p;
 	int		i;
@@ -41,9 +41,9 @@ char	*find_cmd_path(char **arr, char *cmd)
 			return (perror(cmd), NULL);
 	}
 	i = 0;
-	while (arr[i])
+	while (paths[i])
 	{
-		cmd_p = ft_strjoin(ft_strdup(arr[i]), "/");
+		cmd_p = ft_strjoin(ft_strdup(paths[i]), "/");
 		if (!cmd_p)
 			return (NULL);
 		cmd_p = ft_strjoin(cmd_p, cmd);

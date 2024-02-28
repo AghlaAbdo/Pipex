@@ -6,14 +6,13 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:24:11 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 19:11:40 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/28 10:54:34 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -21,7 +20,7 @@
 
 char	*find_path(char **env);
 void	free_arr(char **arr);
-char	*find_cmd_path(char **arr, char *cmd);
+char	*find_cmd_path(char **paths, char *cmd);
 void	clear_exit(char ***paths, char **cmd, char *path_v, int status);
 
 #endif

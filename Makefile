@@ -1,13 +1,12 @@
 NAME 		= pipex
-NAME_BONS	= pipex_bonus
 CC 			= cc
 CFLAGS		= -Wall -Wextra -Werror
-LIBFT		=  ./Libft/libft.a
+LIBFT		= ./Libft/libft.a
 HEADER		= ./Mandatory/pipex.h
 HEADER_BONS	= ./Bonus/pipex_bonus.h
 HEADER_GNL	= ./get_next_line/get_next_line.h
 
-SRCS		= ./Mandatory/pipex.c	\
+SRCS		= ./Mandatory/main.c	\
 			./Mandatory/tools.c
 
 SRCS_BONS	= ./Bonus/main_bonus.c			\
@@ -25,15 +24,18 @@ OBJS_GNL	= $(SRCS_GNL:.c=.o)
 
 all: libft $(NAME)
 
-bonus: libft $(NAME_BONS)
+bonus: libft $(NAME) 
 
-$(NAME): $(OBJS) $(LIBFT) 
-	@echo "Building $@.."
-	@$(CC) $(CFLAGS) $(LIBFT) $(OBJS) -o $@
+ifeq ($(MAKECMDGOALS),bonus)
+    $(NAME): $(OBJS_BONS) $(OBJS_GNL) $(LIBFT)
+		@echo "Building $@.."
+		@$(CC) $(CFLAGS) $(LIBFT) $(OBJS_BONS) $(OBJS_GNL) -o $@
 
-$(NAME_BONS): $(OBJS_BONS) $(OBJS_GNL) $(LIBFT)
-	@echo "Building $@.."
-	@$(CC) $(CFLAGS) $(LIBFT) $(OBJS_BONS) $(OBJS_GNL) -o $@
+else
+    $(NAME): $(OBJS) $(LIBFT)
+		@echo "Building $@.."
+		@$(CC) $(CFLAGS) $(LIBFT) $(OBJS) -o $@
+endif
 
 libft:
 	@make -C Libft
@@ -54,12 +56,12 @@ clean:
 	@echo "Removed object files"
 	@rm -f $(OBJS)
 	@rm -f $(OBJS_BONS)
+	@rm -f $(OBJS_GNL)
 	@make -C Libft clean
 
 fclean: clean
 	@echo "Removed executable"
 	@rm -f $(NAME)
-	@rm -f $(NAME_BONS)
 	@rm -f $(LIBFT)
 
 re: fclean all

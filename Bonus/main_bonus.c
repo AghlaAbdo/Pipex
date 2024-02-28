@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:03:56 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 17:34:40 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/28 10:48:34 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,24 +130,25 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	data;
 	char	*path_v;
-	int		rtrn;
+	int		status;
 
+	if (ac < 5)
+		return (1);
 	path_v = find_path(env);
 	if (!path_v)
-		return (1);
+		return (2);
 	data.ac = ac;
 	data.cmd_n = cmd_count(&data, ac, av);
+	if (data.cmd_i < 0)
+		return (1);
 	data.paths = ft_split(path_v, ':');
 	if (!data.paths)
-		return (1);
+		return (3);
 	data.fds_n = data.cmd_n -1;
 	data.fds = init_fds(data.fds_n);
 	if (!data.fds)
-	{
-		free_arr(data.paths);
-		return (1);
-	}
-	rtrn = fork_it(&data, av, env, data.cmd_n);
+		return (free_arr(data.paths), 4);
+	status = fork_it(&data, av, env, data.cmd_n);
 	free_arr(data.paths);
-	return (rtrn);
+	return (status);
 }

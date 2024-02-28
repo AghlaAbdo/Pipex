@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 09:45:07 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/26 16:04:49 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/28 10:18:26 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ static void	read_rest(t_data *data, char **av, char *line, char *input)
 {
 	while (check_end(av[2], line))
 	{
-		free(line);
+		if (line)
+		{
+			ft_putstr_fd("pipe heredoc> ", 1);
+			free(line);
+		}
 		line = get_next_line(0);
 		if (line && check_end(av[2], line))
 		{
@@ -56,6 +60,7 @@ void	read_heredoc(t_data *data, char **av)
 	input = ft_strdup("");
 	if (!input)
 		exit(1);
+	ft_putstr_fd("pipe heredoc> ", 1);
 	line = get_next_line(0);
 	if (line)
 	{

@@ -6,16 +6,11 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 19:12:42 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/28 10:09:49 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-// void	leaks(void)
-// {
-// 	system("leaks pipex");
-// }
 
 int	handle_fds_one(char **av, int *fds)
 {

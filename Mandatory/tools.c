@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:40:51 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 19:14:51 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/27 20:29:32 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-char	*find_cmd_path(char **arr, char *cmd)
+char	*find_cmd_path(char **paths, char *cmd)
 {
 	char	*cmd_p;
 	int		i;
@@ -53,9 +53,9 @@ char	*find_cmd_path(char **arr, char *cmd)
 			return (perror(cmd), NULL);
 	}
 	i = 0;
-	while (arr[i])
+	while (paths[i])
 	{
-		cmd_p = ft_strjoin(ft_strdup(arr[i]), "/");
+		cmd_p = ft_strjoin(ft_strdup(paths[i]), "/");
 		if (!cmd_p)
 			return (NULL);
 		cmd_p = ft_strjoin(cmd_p, cmd);
@@ -63,7 +63,6 @@ char	*find_cmd_path(char **arr, char *cmd)
 			return (NULL);
 		if (!access(cmd_p, F_OK | X_OK))
 			return (cmd_p);
-		printf("path = %s\n", cmd_p);
 		free(cmd_p);
 		i++;
 	}

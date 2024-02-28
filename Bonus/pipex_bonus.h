@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:04:16 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 16:57:23 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/28 10:54:56 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "../Libft/libft.h"
 # include "../get_next_line/get_next_line.h"
-# include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -41,7 +40,7 @@ int		handle_fds_last(char **av, t_data *data, int j);
 int		cmd_count(t_data *data, int ac, char **av);
 void	free_arr(char **arr);
 char	*find_path(char **env);
-char	*find_cmd_path(char **arr, char *cmd);
+char	*find_cmd_path(char **paths, char *cmd);
 void	clear_exit(t_data *data, char **cmd, char *path, int status);
 void	read_heredoc(t_data *data, char **av);
 
