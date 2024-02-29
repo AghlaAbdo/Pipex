@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:40:51 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/27 20:29:32 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/29 21:42:20 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ char	*find_cmd_path(char **paths, char *cmd)
 	if (ft_strchr(cmd, '/'))
 	{
 		if (!access(cmd, F_OK | X_OK))
+		{
+			printf("is executable\n");
 			return (ft_strdup(cmd));
+		}
 		else
 			return (perror(cmd), NULL);
 	}
@@ -69,28 +72,22 @@ char	*find_cmd_path(char **paths, char *cmd)
 	return (perror(cmd), NULL);
 }
 
-void	clear_exit(char ***paths, char **cmd, char *path_v, int status)
+void	clear_exit(char **paths, char **cmd, int *fds, int status)
 {
-	if (*paths)
+	if (fds)
 	{
-		free_arr(*paths);
-		*paths = NULL;
+		close(fds[0]);
+		close(fds[1]);
 	}
+	if (paths)
+		free_arr(paths);
 	if (cmd && !*cmd)
 	{
 		ft_putstr_fd(": No such file or directory\n", 2);
 		free(cmd);
-		if (path_v && !*path_v)
-			status = 126;
-		else
-			status = 127;
 	}
 	else
-	{
 		if (cmd)
 			free_arr(cmd);
-		if (path_v)
-			free(path_v);
-	}
 	exit(status);
 }

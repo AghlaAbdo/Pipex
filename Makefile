@@ -1,7 +1,7 @@
 NAME 		= pipex
 CC 			= cc
 CFLAGS		= -Wall -Wextra -Werror
-LIBFT		= ./Libft/libft.a
+LIBFT_L		= ./Libft/libft.a
 HEADER		= ./Mandatory/pipex.h
 HEADER_BONS	= ./Bonus/pipex_bonus.h
 HEADER_GNL	= ./get_next_line/get_next_line.h
@@ -27,14 +27,14 @@ all: libft $(NAME)
 bonus: libft $(NAME) 
 
 ifeq ($(MAKECMDGOALS),bonus)
-    $(NAME): $(OBJS_BONS) $(OBJS_GNL) $(LIBFT)
+    $(NAME): $(OBJS_BONS) $(OBJS_GNL) $(LIBFT_L)
 		@echo "Building $@.."
-		@$(CC) $(CFLAGS) $(LIBFT) $(OBJS_BONS) $(OBJS_GNL) -o $@
+		@$(CC) $(CFLAGS) $(LIBFT_L) $(OBJS_BONS) $(OBJS_GNL) -o $@
 
 else
-    $(NAME): $(OBJS) $(LIBFT)
+    $(NAME): $(OBJS) $(LIBFT_L)
 		@echo "Building $@.."
-		@$(CC) $(CFLAGS) $(LIBFT) $(OBJS) -o $@
+		@$(CC) $(CFLAGS) $(LIBFT_L) $(OBJS) -o $@
 endif
 
 libft:
@@ -44,11 +44,11 @@ get_next_line/%.o: get_next_line/%.c $(HEADER_GNL)
 	@echo "Compiling $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-%_bonus.o: %_bonus.c $(HEADER_BONS) $(OBJS_GNL) $(LIBFT)
+%_bonus.o: %_bonus.c $(HEADER_BONS) $(OBJS_GNL) $(LIBFT_L)
 	@echo "Compiling $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.c $(HEADER) $(LIBFT) 
+%.o: %.c $(HEADER) $(LIBFT_L) 
 	@echo "Compiling $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -62,7 +62,7 @@ clean:
 fclean: clean
 	@echo "Removed executable"
 	@rm -f $(NAME)
-	@rm -f $(LIBFT)
+	@rm -f $(LIBFT_L)
 
 re: fclean all
 

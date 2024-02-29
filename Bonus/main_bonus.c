@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:03:56 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/28 10:48:34 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/02/29 22:22:41 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	first_cmd(t_data *data, char **av, char **env)
 		free_arr(data->paths);
 		execve(cmd_path, cmd, env);
 		perror("exec");
-		clear_exit(data, cmd, cmd_path, 1);
+		clear_exit(NULL, cmd, cmd_path, 1);
 	}
 	data->cmd_i++;
 	data->cmd_n--;
@@ -63,7 +63,7 @@ int	last_cmd(t_data *data, char **av, char **env, int j)
 		free_arr(data->paths);
 		execve(cmd_path, cmd, env);
 		perror("exec");
-		clear_exit(data, cmd, cmd_path, 1);
+		clear_exit(NULL, cmd, cmd_path, 1);
 	}
 	close_fds(data);
 	waitpid(id, &status, 0);
@@ -93,7 +93,7 @@ void	exec_cmd(t_data *data, char **av, char **env, int j)
 		free_arr(data->paths);
 		execve(cmd_path, cmd, env);
 		perror("exec");
-		clear_exit(data, cmd, cmd_path, 1);
+		clear_exit(NULL, cmd, cmd_path, 1);
 	}
 }
 
@@ -136,7 +136,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	path_v = find_path(env);
 	if (!path_v)
-		return (2);
+		path_v = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin";
 	data.ac = ac;
 	data.cmd_n = cmd_count(&data, ac, av);
 	if (data.cmd_i < 0)
