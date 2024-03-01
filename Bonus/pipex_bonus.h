@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:04:16 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/29 21:51:08 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/01 12:32:17 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
+
+# define TRUE 1
+# define FALSE 0
 
 typedef struct s_data
 {
@@ -42,6 +45,6 @@ void	free_arr(char **arr);
 char	*find_path(char **env);
 char	*find_cmd_path(char **paths, char *cmd);
 void	clear_exit(t_data *data, char **cmd, char *path, int status);
-void	read_heredoc(t_data *data, char **av);
+int		read_heredoc(t_data *data, char **av, char *line, char *input);
 
 #endif

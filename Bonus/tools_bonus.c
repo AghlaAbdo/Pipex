@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:23:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/28 10:42:46 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/01 10:59:49 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,13 @@ int	cmd_count(t_data *data, int ac, char **av)
 			return (-1);
 		data->cmd_i = 3;
 		count = ac - 4;
-		data->here_doc = 1;
-		read_heredoc(data, av);
+		data->here_doc = TRUE;
+		if (read_heredoc(data, av, NULL, NULL))
+			exit(1);
 	}
 	else
 	{
-		data->here_doc = 0;
+		data->here_doc = FALSE;
 		data->cmd_i = 2;
 		count = ac - 3;
 	}
