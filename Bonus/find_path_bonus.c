@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 12:32:20 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/29 21:52:12 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/02 10:39:30 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,14 @@ void	clear_exit(t_data *data, char **cmd, char *path, int status)
 	{
 		ft_putstr_fd(": No such file or directory\n", 2);
 		free(cmd);
-		if (path && !*path)
-			status = 126;
-		else
-			status = 127;
+		status = 127;
 	}
 	else
 	{
 		if (cmd)
 			free_arr(cmd);
-		if (path)
-			free(path);
 	}
+	if (path)
+		free(path);
 	exit(status);
 }

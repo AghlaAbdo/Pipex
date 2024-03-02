@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 09:45:07 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/01 12:31:33 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/02 10:39:45 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	check_end(char *limitter, char *line, int flag)
 	if (!line)
 		return (1);
 	size = ft_strlen(limitter);
-	if (flag == FALSE)
+	if (flag == CHECK_LOOP)
 	{
 		if (!ft_strncmp(limitter, line, size) && (line[size] == '\n'))
 			return (0);
@@ -33,30 +33,47 @@ static int	check_end(char *limitter, char *line, int flag)
 	return (1);
 }
 
-static char	*read_rest(char **av, char *line, char *prev, char *input)
+int	update_value(char *line, char **prev, char **prev_ln)
 {
-	while (check_end(av[2], line, FALSE))
+	if (line[0] != '\n')
 	{
-		if ((!line && ft_strchr(prev, '\n'))
-			|| (line && line[0] == '\n' && !check_end(av[2], prev, TRUE)))
-			break ;
+		free(*prev);
+		*prev = ft_strdup(line);
+		if (!*prev)
+			return (1);
+	}
+	free(*prev_ln);
+	*prev_ln = ft_strdup(line);
+	if (!*prev_ln)
+		return (free(*prev), 1);
+	return (0);
+}
+
+static char	*read_rest(char **av, char *line, char *prev_ln, char *input)
+{
+	char	*prev;
+
+	prev = NULL;
+	while (check_end(av[2], line, CHECK_LOOP))
+	{
 		if (line && ft_strchr(line, '\n'))
 			ft_putstr_fd("> ", 1);
 		free(line);
 		line = get_next_line(0);
-		if (line && ft_strncmp(line, "\n", 1))
-		{
-			free(prev);
-			prev = ft_strdup(line);
-		}
-		if (line && check_end(av[2], line, TRUE))
+		if (line)
+			if (update_value(line, &prev, &prev_ln))
+				return (free(line), free(input), NULL);
+		if ((!line && ft_strchr(prev_ln, '\n'))
+			|| (line && line[0] == '\n' && !check_end(av[2], prev, CHECK_JOIN)))
+			break ;
+		if (line && check_end(av[2], line, CHECK_JOIN))
 		{
 			input = ft_strjoin(input, line);
 			if (!input)
-				return (free(line), free(prev), NULL);
+				return (free(line), free(prev_ln), NULL);
 		}
 	}
-	return (free(line), free(prev), input);
+	return (free(line), free(prev), free(prev_ln), input);
 }
 
 int	read_heredoc(t_data *data, char **av, char *line, char *input)
@@ -67,12 +84,12 @@ int	read_heredoc(t_data *data, char **av, char *line, char *input)
 		exit(1);
 	ft_putstr_fd("> ", 1);
 	line = get_next_line(0);
-	if (line && check_end(av[2], line, FALSE))
+	if (line && check_end(av[2], line, CHECK_LOOP))
 	{
 		prev = ft_strdup(line);
 		if (!prev)
 			return (free(line), 1);
-		if (check_end(av[2], line, TRUE))
+		if (check_end(av[2], line, CHECK_JOIN))
 		{
 			input = ft_strjoin(ft_strdup(""), line);
 			if (!input)

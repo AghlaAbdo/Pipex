@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:24:11 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/29 21:42:24 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/02 10:47:43 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include "../Libft/libft.h"
+
 
 char	*find_path(char **env);
 void	free_arr(char **arr);

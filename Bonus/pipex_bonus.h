@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:04:16 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/01 12:32:17 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/02 10:40:42 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 
 # define TRUE 1
 # define FALSE 0
+# define CHECK_LOOP 0
+# define CHECK_JOIN 1
+# define malloc(x) NULL
 
 typedef struct s_data
 {

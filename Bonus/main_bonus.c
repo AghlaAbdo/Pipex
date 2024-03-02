@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:03:56 by aaghla            #+#    #+#             */
-/*   Updated: 2024/02/29 22:22:41 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/01 15:21:33 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	first_cmd(t_data *data, char **av, char **env)
 	{
 		cmd = ft_split(av[data->cmd_i], ' ');
 		if (!cmd || !*cmd)
-			clear_exit(data, cmd, av[data->cmd_i], 1);
+			clear_exit(data, cmd, NULL, 1);
 		cmd_path = find_cmd_path(data->paths, cmd[0]);
 		if (handle_fds_first(av, data))
 			clear_exit(data, cmd, cmd_path, 1);
@@ -53,7 +53,7 @@ int	last_cmd(t_data *data, char **av, char **env, int j)
 	{
 		cmd = ft_split(av[data->cmd_i], ' ');
 		if (!cmd || !*cmd)
-			clear_exit(data, cmd, av[data->cmd_i], 1);
+			clear_exit(data, cmd, NULL, 1);
 		cmd_path = find_cmd_path(data->paths, cmd[0]);
 		if (handle_fds_last(av, data, j))
 			clear_exit(data, cmd, cmd_path, 1);
@@ -83,7 +83,7 @@ void	exec_cmd(t_data *data, char **av, char **env, int j)
 	{
 		cmd = ft_split(av[data->cmd_i], ' ');
 		if (!cmd || !*cmd)
-			clear_exit(data, cmd, av[data->cmd_i], 1);
+			clear_exit(data, cmd, NULL, 1);
 		cmd_path = find_cmd_path(data->paths, cmd[0]);
 		if (handle_fds(data, j))
 			clear_exit(data, cmd, cmd_path, 1);
