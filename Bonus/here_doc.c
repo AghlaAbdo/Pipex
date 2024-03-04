@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 09:45:07 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/02 10:39:45 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/03 16:00:02 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	check_end(char *limitter, char *line, int flag)
 	return (1);
 }
 
-int	update_value(char *line, char **prev, char **prev_ln)
+static int	update_value(char *line, char **prev, char **prev_ln)
 {
 	if (line[0] != '\n')
 	{

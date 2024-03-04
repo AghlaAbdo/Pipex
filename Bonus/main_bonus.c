@@ -6,13 +6,13 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:03:56 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/01 15:21:33 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:59:48 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	first_cmd(t_data *data, char **av, char **env)
+static void	first_cmd(t_data *data, char **av, char **env)
 {
 	char	**cmd;
 	char	*cmd_path;
@@ -41,7 +41,7 @@ void	first_cmd(t_data *data, char **av, char **env)
 	data->cmd_n--;
 }
 
-int	last_cmd(t_data *data, char **av, char **env, int j)
+static int	last_cmd(t_data *data, char **av, char **env, int j)
 {
 	char	**cmd;
 	char	*cmd_path;
@@ -70,7 +70,7 @@ int	last_cmd(t_data *data, char **av, char **env, int j)
 	return (WEXITSTATUS(status));
 }
 
-void	exec_cmd(t_data *data, char **av, char **env, int j)
+static void	exec_cmd(t_data *data, char **av, char **env, int j)
 {
 	char	**cmd;
 	char	*cmd_path;
@@ -97,7 +97,7 @@ void	exec_cmd(t_data *data, char **av, char **env, int j)
 	}
 }
 
-int	fork_it(t_data *data, char **av, char **env, int cmd_n)
+static int	fork_it(t_data *data, char **av, char **env, int cmd_n)
 {
 	int	j;
 	int	status;

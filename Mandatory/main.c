@@ -6,13 +6,13 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/02 10:52:47 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/03 15:58:40 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	handle_fds_one(char **av, int *fds)
+static int	handle_fds_one(char **av, int *fds)
 {
 	int	fd;
 
@@ -32,26 +32,25 @@ int	handle_fds_one(char **av, int *fds)
 	return (0);
 }
 
-void	exec_cmd_one(char **av, char **env, char **paths, int *fds)
+static void	exec_cmd_one(t_data *data, char **av, char **env, int *fds)
 {
 	char	*path_v;
 	char	**cmd;
-	int		id;
 
-	id = fork();
-	if (id == -1)
-		clear_exit(paths, NULL, fds, 1);
-	if (id == 0)
+	data->id_one = fork();
+	if (data->id_one == -1)
+		clear_exit(data->paths, NULL, fds, 1);
+	if (data->id_one == 0)
 	{
 		cmd = ft_split(av[2], ' ');
 		if (!cmd || !*cmd)
-			clear_exit(paths, cmd, fds, 1);
+			clear_exit(data->paths, cmd, fds, 1);
 		if (handle_fds_one(av, fds))
-			clear_exit(paths, cmd, fds, 1);
-		path_v = find_cmd_path(paths, cmd[0]);
+			clear_exit(data->paths, cmd, fds, 1);
+		path_v = find_cmd_path(data->paths, cmd[0]);
 		if (!path_v)
-			clear_exit(paths, cmd, fds, 127);
-		free_arr(paths);
+			clear_exit(data->paths, cmd, fds, 127);
+		free_arr(data->paths);
 		close(fds[0]);
 		close(fds[1]);
 		execve(path_v, cmd, env);
@@ -61,7 +60,7 @@ void	exec_cmd_one(char **av, char **env, char **paths, int *fds)
 	}
 }
 
-int	handle_fds_two(char **av, int *fds)
+static int	handle_fds_two(char **av, int *fds)
 {
 	int	fd;
 
@@ -81,26 +80,25 @@ int	handle_fds_two(char **av, int *fds)
 	return (0);
 }
 
-void	exec_cmd_two(char **av, char **env, char **paths, int *fds)
+static void	exec_cmd_two(t_data *data, char **av, char **env, int *fds)
 {
 	char	*path_v;
 	char	**cmd;
-	int		id;
 
-	id = fork();
-	if (id == -1)
-		clear_exit(paths, NULL, fds, 1);
-	if (id == 0)
+	data->id_two = fork();
+	if (data->id_two == -1)
+		clear_exit(data->paths, NULL, fds, 1);
+	if (data->id_two == 0)
 	{
 		cmd = ft_split(av[3], ' ');
 		if (!cmd || !*cmd)
-			clear_exit(paths, cmd, fds, 1);
+			clear_exit(data->paths, cmd, fds, 1);
 		if (handle_fds_two(av, fds))
-			clear_exit(paths, cmd, fds, 1);
-		path_v = find_cmd_path(paths, cmd[0]);
+			clear_exit(data->paths, cmd, fds, 1);
+		path_v = find_cmd_path(data->paths, cmd[0]);
 		if (!path_v)
-			clear_exit(paths, cmd, fds, 127);
-		free_arr(paths);
+			clear_exit(data->paths, cmd, fds, 127);
+		free_arr(data->paths);
 		close(fds[0]);
 		close(fds[1]);
 		execve(path_v, cmd, env);
@@ -112,8 +110,8 @@ void	exec_cmd_two(char **av, char **env, char **paths, int *fds)
 
 int	main(int ac, char **av, char **env)
 {
+	t_data	data;
 	char	*path_v;
-	char	**paths;
 	int		fds[2];
 	int		status;
 
@@ -122,15 +120,15 @@ int	main(int ac, char **av, char **env)
 	path_v = find_path(env);
 	if (!path_v)
 		path_v = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin";
-	paths = ft_split(path_v, ':');
-	if (!paths)
+	data.paths = ft_split(path_v, ':');
+	if (!data.paths)
 		return (close(fds[0]), close(fds[1]), 1);
-	exec_cmd_one(av, env, paths, fds);
-	wait(NULL);
-	exec_cmd_two(av, env, paths, fds);
+	exec_cmd_one(&data, av, env, fds);
+	exec_cmd_two(&data, av, env, fds);
 	close(fds[1]);
 	close(fds[0]);
-	wait(&status);
-	free_arr(paths);
+	waitpid(data.id_one, NULL, 0);
+	waitpid(data.id_two, &status, 0);
+	free_arr(data.paths);
 	return (WEXITSTATUS(status));
 }
