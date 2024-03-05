@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:32:00 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/03 15:58:40 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/05 19:03:36 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	path_v = find_path(env);
 	if (!path_v)
-		path_v = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin";
+		return (close(fds[0]), close(fds[1]), 1);
 	data.paths = ft_split(path_v, ':');
 	if (!data.paths)
 		return (close(fds[0]), close(fds[1]), 1);

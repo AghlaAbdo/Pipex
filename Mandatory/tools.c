@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:40:51 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/02 08:41:17 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/05 19:09:07 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*find_path(char **env)
 
 	i = 0;
 	if (!env || !*env)
-		return (NULL);
+		return ("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin");
 	while (env[i])
 	{
 		if (!ft_strncmp(env[i], "PATH=", 5))
