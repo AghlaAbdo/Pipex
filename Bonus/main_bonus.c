@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:03:56 by aaghla            #+#    #+#             */
-/*   Updated: 2024/03/03 15:59:48 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/03/08 23:53:52 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,18 +136,18 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	path_v = find_path(env);
 	if (!path_v)
-		path_v = "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin";
+		return (2);
 	data.ac = ac;
 	data.cmd_n = cmd_count(&data, ac, av);
 	if (data.cmd_i < 0)
-		return (1);
+		return (3);
 	data.paths = ft_split(path_v, ':');
 	if (!data.paths)
-		return (3);
+		return (4);
 	data.fds_n = data.cmd_n -1;
 	data.fds = init_fds(data.fds_n);
 	if (!data.fds)
-		return (free_arr(data.paths), 4);
+		return (free_arr(data.paths), 5);
 	status = fork_it(&data, av, env, data.cmd_n);
 	free_arr(data.paths);
 	return (status);
